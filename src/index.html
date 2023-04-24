@@ -3,14 +3,41 @@
   <title>Trip Planner</title>
 </head>
 <body>
-  <div class="container">
-      <h1>Heading</h1>
-      <form>
-        <div class="mb-3">
 
+  <div class="container">
+      <h1>Please enter the date</h1>
+      <form>
+        <div class="mb-3" id="destination1-input">
+          <label for="location">Enter a city (or pin a location on the map)</label>
+          <input type="text" id="location"><br>
+          
+          <label for="arrival-date">Select the arrival date:</label>
+          <input type="date" id="arrival-date"><br>
+          <label for="departure-date">Select the departure date:</label>
+          <input type="date" id="departure-date"><br>
+
+          <label for="travel-mode">Enter the method of travel:</label>
+          <input type="text" id="travel-mode"><br>
+
+          <label for="description">Destination description:</label>
+          <input type="text" id="description"><br>
         </div>
+        <button type="submit" class="btn btn-success"></button>
       </form>
 
   </div>
+
+  <div id="map-results">
+    <p>Please choose a place：</p>
+  </div>
+
+  <div id="event-results">
+    <p>Here are the suggested events：</p>
+  </div>
+
+  <div id="trip-summary">
+    <p>For description for the user：</p>
+  </div>
+
 </body>
 </html>

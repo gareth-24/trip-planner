@@ -21,7 +21,7 @@ _This is a web application that...._
 
 * _Clone this repository to desired location_
 * _Open your terminal_
-* _Navigate to root directory of "Bike Index API" with your terminal_
+* _Navigate to root directory of "trip-planner" with your terminal_
 <!-- create new file named ".env" -->
 <!-- go to "url" -->
 <!-- make an account -->
