@@ -1,0 +1,1 @@
+import  './js/event-service.js';
