@@ -29,9 +29,12 @@ function handleMap()  {
 function printEventElements(response, post) { 
 
   response.events.forEach(function(key){
-    let eventName = document.createElement("li");
-    eventName.innerText = `${key.title}`;
-    document.querySelector("#eventName").append(eventName);
+    let eventLink = document.createElement("li");
+    let URLlink = document.createElement("a");
+    URLlink.setAttribute("href",key.venue.url);
+    URLlink.innerText = `${key.title}`;
+    eventLink.append(URLlink);
+    document.querySelector("#eventName").append(eventLink);
 
     let eventTime = document.createElement("li");
     eventTime.innerText = `${key["datetime_utc"]}`;
@@ -40,13 +43,6 @@ function printEventElements(response, post) {
     let eventPrice = document.createElement("li");
     eventPrice.innerText = `$${key.stats["average_price"]}`;
     document.querySelector("#eventPrice").append(eventPrice);
-
-    let eventLink = document.createElement("li");
-    let URLlink = document.createElement("a");
-    URLlink.setAttribute("href",key.venue.url);
-    URLlink.innerText = key.venue.url;
-    eventLink.append(URLlink);
-    document.querySelector("#eventURL").append(eventLink);
   })  
 }
 
