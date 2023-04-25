@@ -22,7 +22,6 @@ async function getEventService(post) {
 
 function handleMap()  {
   let mymap = L.map("map").setView([45.519859, -122.677803], 13);
-
   buildMap(mymap);
 }
 
@@ -30,24 +29,24 @@ function handleMap()  {
 function printEventElements(response, post) { 
 
   response.events.forEach(function(key){
-    let event = document.createElement("li");
-    event.innerText = `${key.title}`;
-    document.querySelector("#eventName").append(event);
+    let eventName = document.createElement("li");
+    eventName.innerText = `${key.title}`;
+    document.querySelector("#eventName").append(eventName);
 
-    let event1 = document.createElement("li");
-    event1.innerText = `${key["datetime_utc"]}`;
-    document.querySelector("#eventTime").append(event1);
+    let eventTime = document.createElement("li");
+    eventTime.innerText = `${key["datetime_utc"]}`;
+    document.querySelector("#eventTime").append(eventTime);
 
-    let event2 = document.createElement("li");
-    event2.innerText = `$${key.stats["average_price"]}`;
-    document.querySelector("#eventPrice").append(event2);
+    let eventPrice = document.createElement("li");
+    eventPrice.innerText = `$${key.stats["average_price"]}`;
+    document.querySelector("#eventPrice").append(eventPrice);
 
-    let event3 = document.createElement("li");
+    let eventLink = document.createElement("li");
     let URLlink = document.createElement("a");
     URLlink.setAttribute("href",key.venue.url);
     URLlink.innerText = key.venue.url;
-    event3.append(URLlink);
-    document.querySelector("#eventURL").append(event3);
+    eventLink.append(URLlink);
+    document.querySelector("#eventURL").append(eventLink);
   })  
 }
 
