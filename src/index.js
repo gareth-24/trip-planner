@@ -22,27 +22,29 @@ async function getEventService(post) {
 
 function handleMap()  {
   let mymap = L.map("map").setView([45.519859, -122.677803], 13);
-
   buildMap(mymap);
 }
 
 // ui 
-function printEventElements(response, post) {
+function printEventElements(response, post) { 
 
-  document.querySelector('#showEventResponse').innerText = `The type in ${post} is ${response.events["0"].type}. Title ${response.events["0"].title}. The utc time of event is ${response.events["0"]["datetime_utc"]}. The average price for this event is $${response.events["0"].stats["average_price"]}. The link is ${response.events["0"].venue.url}.`;
+  response.events.forEach(function(key){
+    let eventLink = document.createElement("li");
+    let URLlink = document.createElement("a");
+    URLlink.setAttribute("href",key.venue.url);
+    URLlink.innerText = `${key.title}`;
+    eventLink.append(URLlink);
+    document.querySelector("#eventName").append(eventLink);
+
+    let eventTime = document.createElement("li");
+    eventTime.innerText = `${key["datetime_utc"]}`;
+    document.querySelector("#eventTime").append(eventTime);
+
+    let eventPrice = document.createElement("li");
+    eventPrice.innerText = `$${key.stats["average_price"]}`;
+    document.querySelector("#eventPrice").append(eventPrice);
+  })  
 }
-
-// 4 events together, display each 
-/*
-events[0].type
-events.0.title
-events.0.datetime_utc
-events.0.stats.average_price
-events.0.url
-first event type title
-price datetime
-url
-*/
 
 function printEventError(error, post) {
   document.querySelector('#showEventResponse').innerText = `There was an error accessing the data for ${post}: 

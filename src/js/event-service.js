@@ -3,8 +3,7 @@ export default class EventService {
     try{
       const response = await fetch(`https://api.seatgeek.com/2/events?geoip=${postal}&range=12mi&sort=score.desc&client_id=${process.env.API_KEY}`)
       const jsoinifiedResponse = await response.json();
-
-
+      
       //https://api.seatgeek.com/2/events?geoip=94560&range=12mi&client_id=MzMyNjYyMjV8MTY4MjM1OTcyNC42MzUxOTk
       // MzMyNjYyMjV8MTY4MjM1OTcyNC42MzUxOTk - current api key
 
