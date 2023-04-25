@@ -19,10 +19,26 @@ async function getEventService(post) {
 }
 
 //business for map service
-
 function handleMap()  {
-  let mymap = L.map("map").setView([45.519859, -122.677803], 13);
-  buildMap(mymap);
+
+  let map = L.map("map").setView([40, -95], 5); //sets default zoom when the webpage loads
+  buildMap(map);
+
+  map.addEventListener("dblclick", function(event)  {
+    // Get coordinates of click
+    const lat = event.latlng.lat;
+    const lng = event.latlng.lng;
+    console.log(lat,lng);
+
+    // Adds a pin icon to the map when double clicked
+    let pinLocation = event.latlng;
+    let pinMarker = L.marker(pinLocation).addTo(map);
+    pinMarker.bindPopup('You clicked the map at ' + pinLocation.toString()).openPopup();
+
+    pinMarker.on('click',function(){
+      map.removeLayer(pinMarker);
+    });
+  });
 }
 
 // ui 
