@@ -1,8 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet/src/Leaflet.js';
 import './css/styles.css';
-import EventService from './js/event-service.js';
 
-// buisness
+import EventService from './js/event-service.js';
+import buildMap from './js/map.js';
+
+
+// buisness for event service
 async function getEventService(post) {
   const response = await EventService.getEventService(post);
   if (response) {
@@ -10,6 +16,14 @@ async function getEventService(post) {
   } else {
     printEventError(response, post);
   }
+}
+
+//business for map service
+
+function handleMap()  {
+  let mymap = L.map("map").setView([45.519859, -122.677803], 13);
+
+  buildMap(mymap);
 }
 
 // ui 
@@ -43,4 +57,5 @@ function handleFormSubmission(event){
 
 window.addEventListener("load", function() {
   document.querySelector("form").addEventListener("submit", handleFormSubmission);
+  handleMap();
 });
