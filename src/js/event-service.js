@@ -6,11 +6,11 @@ export default class EventService {
       urlString = `https://api.seatgeek.com/2/events?client_id=${process.env.API_KEY}&range=12mi&sort=score.desc&lat=${latitude}&lon=${longitude}`;
     
     } else {
-      urlString = `https://api.seatgeek.com/2/events?geoip=true&client_id=${process.env.API_KEY}`
+      urlString = `https://api.seatgeek.com/2/events?geoip=true&client_id=${process.env.API_KEY}`;
     }
     
     try{
-      const response = await fetch(urlString)
+      const response = await fetch(urlString);
       const jsoinifiedResponse = await response.json();
       
       //https://api.seatgeek.com/2/events?geoip=94560&range=12mi&client_id=MzMyNjYyMjV8MTY4MjM1OTcyNC42MzUxOTk

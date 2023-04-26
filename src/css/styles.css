@@ -1,8 +1,15 @@
 #map {
   padding: 20px;
-  margin: 20px;
+  margin: 30px;
   height: 600px;
   width: 60%;
+  box-sizing: border-box;
+  border: solid;
+  border-width: 3px;
+}
+
+body  {
+  background-color: #acb7ae;
 }
 
 .leaflet-marker-icon {
@@ -10,3 +17,16 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.container  {
+  padding: 20px;
+  margin: 20px;
+}
+
+.card {
+  padding: 20px;
+  margin: 30px;
+  background-color: #e8f9fd;
+}
+
+

@@ -14,6 +14,9 @@ async function getEventService(lat, long) {
   const response = await EventService.getEventService(lat,long);
   if (response) {
     printEventElements(response);
+    /*
+    updatesummary
+    */
   } else {
     printEventError(response);
   }
@@ -65,6 +68,12 @@ function printEventElements(response) {
   });  
 }
 
+function clearEvents(){
+  document.querySelector("#eventName").innerText= "";
+  document.querySelector("#eventTime").innerText= "";
+  document.querySelector("#eventPrice").innerText= "";
+}
+
 function printEventError(error) {
   document.querySelector('#showEventResponse').innerText = `There was an error accessing the data: 
   ${error}.`;
@@ -76,24 +85,34 @@ function updateSummary(location,arrival,departure,travelMode,description)  {
   const newDestination = document.createElement("li");
   newDestination.append(location);
   const newInfo = document.createElement("ul");
-    const newArrival = document.createElement("li");
-    newArrival.append("Arrival Date: " + (arrival.toString()));
-    newInfo.append(newArrival);
-    const newDeparture = document.createElement("li");
-    newDeparture.append("Departure Date: " + (departure.toString()));
-    newInfo.append(newDeparture);
-    const newTravelMode = document.createElement("li");
-    newTravelMode.append("Method of travel: " + travelMode);
-    newInfo.append(newTravelMode);
-    const newDescription = document.createElement("li");
-    newDescription.append(description);
-    newInfo.append(newDescription);
+  const newArrival = document.createElement("li");
+  newArrival.append("Arrival Date: " + (arrival.toString()));
+  newInfo.append(newArrival);
+  const newDeparture = document.createElement("li");
+  newDeparture.append("Departure Date: " + (departure.toString()));
+  newInfo.append(newDeparture);
+  const newTravelMode = document.createElement("li");
+  newTravelMode.append("Method of travel: " + travelMode);
+  newInfo.append(newTravelMode);
+  const newDescription = document.createElement("li");
+  newDescription.append(description);
+  newInfo.append(newDescription);
   
   newDestination.append(newInfo);
   summaryDiv.append(newDestination);
 }
 
-function handleFormSubmission(event){
+function handleMapEvent(event){
+  event.preventDefault();
+  clearEvents();
+  let latitude = sessionStorage.getItem("latitude");
+  let longitude = sessionStorage.getItem("longitude");
+  getEventService(latitude,longitude);
+  sessionStorage.removeItem("latitude");
+  sessionStorage.removeItem("longitude");
+}
+
+function handleSavedInfo(event){
   event.preventDefault();
   const location = document.querySelector("#location").value;
   const arrival = document.querySelector("#arrival-date").value;
@@ -102,16 +121,13 @@ function handleFormSubmission(event){
   const description = document.querySelector("#description").value;
   console.log(location, arrival, departure, travelMode, description); //check form inputs
   updateSummary(location,arrival,departure,travelMode,description);
-
-  let latitude = sessionStorage.getItem("latitude");
-  let longitude = sessionStorage.getItem("longitude");
-  getEventService(latitude,longitude)
-  sessionStorage.removeItem("latitude");
-  sessionStorage.removeItem("longitude");
-
 }
 
+
 window.addEventListener("load", function() {
-  document.querySelector("form").addEventListener("submit", handleFormSubmission);
   handleMap();
+  document.querySelector("#map").addEventListener("dblclick", handleMapEvent);
+  document.querySelector("#saveInputtedInfo").addEventListener("click", handleSavedInfo);
 });
+
+// document.querySelector("form").addEventListener("submit", handleFormSubmission);
