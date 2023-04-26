@@ -3,10 +3,11 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet/src/Leaflet.js';
 import './css/styles.css';
+import "leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/images/marker-icon-2x.png";
 
 import EventService from './js/event-service.js';
 import buildMap from './js/map.js';
-
 
 // buisness for event service
 async function getEventService(post) {
