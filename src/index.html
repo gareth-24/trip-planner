@@ -1,64 +1,97 @@
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
   <title>Trip Planner</title>
 </head>
 <body>
-
-  <div class="container">
-      <h1>Please enter the date</h1>
-      <form>
-        <div class="mb-3" id="destination1-input">
-          <label for="location">Enter a city (or pin a location on the map)</label>
-          <input type="text" id="location"><br>
-          
-          <label for="postal">Enter the postal code for a city(in USA or Canada)</label>
-          <input type="text" id="postal"><br>
-
-          <label for="arrival-date">Select the arrival date:</label>
-          <input type="date" id="arrival-date"><br>
-          <label for="departure-date">Select the departure date:</label>
-          <input type="date" id="departure-date"><br>
-
-          <label for="travel-mode">Enter the method of travel:</label>
-          <input type="text" id="travel-mode"><br>
-
-          <label for="description">Destination description:</label>
-          <input type="text" id="description"><br>
-        </div>
-        <button type="submit" class="btn btn-success"></button>
-      </form>
-
+  <div class="card" id="greeting">
+    <h1>Plan a trip in the US or Canada!</h1><br>
+    <h6>Pin a destination to see nearby events</h6>
+    <ul>
+      <li>click and drag to navigate the map</li>
+      <li>double click a location to place a pin</li>
+      <li>scroll down to see a list of popular nearby events</li>
+      <li>click on a pin to remove it</li>
+      <li>Once you have a location pinned that you want to add info for, fill out the form and click submit.</li>
+    </ul>
   </div>
-
-  <div id="map">
-    <p>Please choose a place：</p>
-  </div>
-
-  <div id="event-results">
-    <p>Here are the suggested events：</p>
-    <p id="showEventResponse"> </p>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-7" id="eventName">
-          <p>Event Name and Ticket Website</p>
-        </div>
-        <div class="col-sm-3" id="eventTime">
-          <p>Event Time</p>
-        </div>
-        <div class="col-sm-2" id="eventPrice">
-          <p>Average Price</p>
-        </div>
+  
+  <!-- start place to hold map -->
+  <div>
+    <div class="row">
+      <div id="map" class="col-lg-7">
       </div>
-      <!-- </div>
-      <ol id="eventList"></ol>
-      </div> -->
+      
+      <div class="col-lg-4">
+        <div class="card">
+          <form>
+            <div class="mb-3" id="destination1-input">
+              <label for="location" class="form-label">Enter the name of your destination:</label>
+              <input type="text" id="location" class="form-control" placeholder="San Francisco"><br>
+    
+              <label for="arrival-date" class="form-label">Select the arrival date:</label>
+              <input type="date" id="arrival-date" class="form-control"><br>
+              <label for="departure-date" class="form-label">Select the departure date:</label>
+              <input type="date" id="departure-date" class="form-control"><br>
+    
+              <label for="travel-mode" class="form-label">Enter your method of travel:</label>
+              <input type="text" id="travel-mode" class="form-control" placeholder="Southwest, flight BA170, SEA to SFO"><br>
+    
+              <label for="description" class="form-label">Destination description:</label>
+              <input type="text" id="description" class="form-control" placeholder="Two night stay at Hilton SF, checkin at 4PM 5/7.">
+              <div id="descriptionHelpBlock" class="form-text">
+                Enter any info you want to save about the destination, such as events, meetups, or lodging.
+              </div>
+              <br>
+              <button type="submit" class="btn btn-success" id="saveInputtedInfo">Save Destination</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <div id="trip-summary">
-    <p>For description for the user：</p>
+  <div id="output">
+    <!-- start to show event results with the clicked place -->
+    <div id="event-results" class="card">
+      <h5>Suggested events near your pinned destination：</h5>
+      <p id="showEventResponse"> </p>
+  
+      <div class="row">
+        
+        <div class="col-12 col-md-7">
+          <p>Event Name and Ticket Website</p>
+          <div id="eventName"></div>
+        </div>
+       
+        <div class="col-sm-3">
+          <p>Event Time</p>
+          <div id="eventTime"></div>
+        </div>
+        <div class="col-sm-2">
+          <p>Average Price</p>
+          <div id="eventPrice"></div>
+        </div>
+      </div>
+    </div> 
+    <form class="container">
+      <button type="submit" class="btn btn-primary" id="previousPage">Previous Page</button>
+      <button type="submit" class="btn btn-primary" id="nextPage">Next Page</button>
+    </form>
   </div>
+  <!-- end of event results --> 
+  
+  <!-- start of trip summary -->
+  <div id="trip-summary" class="card">
+    <h5>Travel Itinerary:</h5>
+    <ol id="destination-summary">
+    </ol>
+  </div>
+  <div class="container">
+    <button type="button" class="btn btn-warning" id="clearItinerary">Clear Last Destination</button>
+  </div>
+  <!-- end of summary-->
 
 </body>
 </html>
