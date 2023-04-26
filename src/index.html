@@ -5,14 +5,14 @@
 <body>
 
   <div class="container">
-      <h1>Please enter the date</h1>
+      <h1>For trips in USA or Canada</h1>
       <form>
         <div class="mb-3" id="destination1-input">
-          <label for="location">Enter a city (or pin a location on the map)</label>
+          <label for="location">Enter the name of your destination (or pin from the map)</label>
           <input type="text" id="location"><br>
           
-          <label for="postal">Enter the postal code for a city(in USA or Canada)</label>
-          <input type="text" id="postal"><br>
+          <!-- <label for="postal">Enter the postal code for a city(in USA or Canada)</label>
+          <input type="text" id="postal"><br> -->
 
           <label for="arrival-date">Select the arrival date:</label>
           <input type="date" id="arrival-date"><br>
@@ -50,14 +50,22 @@
           <p>Average Price</p>
         </div>
       </div>
-      <!-- </div>
-      <ol id="eventList"></ol>
-      </div> -->
+
     </div>
   </div>
 
   <div id="trip-summary">
     <p>For description for the user：</p>
+    <ol id="destination-summary">
+      <li>destination 1
+        <ul>
+          <li>Arrival</li>
+          <li>Departure</li>
+          <li>Method of travel</li>
+          <li>Details</li>
+        </ul>
+      </li>
+    </ol>
   </div>
 
 </body>

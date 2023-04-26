@@ -10,12 +10,12 @@ import EventService from './js/event-service.js';
 import buildMap from './js/map.js';
 
 // buisness for event service
-async function getEventService(post) {
-  const response = await EventService.getEventService(post);
+async function getEventService(lat, long) {
+  const response = await EventService.getEventService(lat,long);
   if (response) {
-    printEventElements(response, post);
+    printEventElements(response);
   } else {
-    printEventError(response, post);
+    printEventError(response);
   }
 }
 
@@ -27,9 +27,11 @@ function handleMap()  {
 
   map.addEventListener("dblclick", function(event)  {
     // Get coordinates of click
-    const lat = event.latlng.lat;
-    const lng = event.latlng.lng;
-    console.log(lat,lng);
+    let lat = event.latlng.lat;
+    let lng = event.latlng.lng;
+    console.log(lat, lng);
+    sessionStorage.setItem("latitude", lat);
+    sessionStorage.setItem("longitude", lng);
 
     // Adds a pin icon to the map when double clicked
     let pinLocation = event.latlng;
@@ -43,7 +45,7 @@ function handleMap()  {
 }
 
 // ui 
-function printEventElements(response, post) { 
+function printEventElements(response) { 
 
   response.events.forEach(function(key){
     let eventLink = document.createElement("li");
@@ -60,18 +62,53 @@ function printEventElements(response, post) {
     let eventPrice = document.createElement("li");
     eventPrice.innerText = `$${key.stats["average_price"]}`;
     document.querySelector("#eventPrice").append(eventPrice);
-  })  
+  });  
 }
 
-function printEventError(error, post) {
-  document.querySelector('#showEventResponse').innerText = `There was an error accessing the data for ${post}: 
+function printEventError(error) {
+  document.querySelector('#showEventResponse').innerText = `There was an error accessing the data: 
   ${error}.`;
+}
+
+function updateSummary(location,arrival,departure,travelMode,description)  {
+  const summaryDiv = document.querySelector("#destination-summary");
+
+  const newDestination = document.createElement("li");
+  newDestination.append(location);
+  const newInfo = document.createElement("ul");
+    const newArrival = document.createElement("li");
+    newArrival.append("Arrival Date: " + (arrival.toString()));
+    newInfo.append(newArrival);
+    const newDeparture = document.createElement("li");
+    newDeparture.append("Departure Date: " + (departure.toString()));
+    newInfo.append(newDeparture);
+    const newTravelMode = document.createElement("li");
+    newTravelMode.append("Method of travel: " + travelMode);
+    newInfo.append(newTravelMode);
+    const newDescription = document.createElement("li");
+    newDescription.append(description);
+    newInfo.append(newDescription);
+  
+  newDestination.append(newInfo);
+  summaryDiv.append(newDestination);
 }
 
 function handleFormSubmission(event){
   event.preventDefault();
-  const post = document.querySelector("#postal").value;
-  getEventService(post);
+  const location = document.querySelector("#location").value;
+  const arrival = document.querySelector("#arrival-date").value;
+  const departure = document.querySelector("#departure-date").value;
+  const travelMode = document.querySelector("#travel-mode").value;
+  const description = document.querySelector("#description").value;
+  console.log(location, arrival, departure, travelMode, description); //check form inputs
+  updateSummary(location,arrival,departure,travelMode,description);
+
+  let latitude = sessionStorage.getItem("latitude");
+  let longitude = sessionStorage.getItem("longitude");
+  getEventService(latitude,longitude)
+  sessionStorage.removeItem("latitude");
+  sessionStorage.removeItem("longitude");
+
 }
 
 window.addEventListener("load", function() {

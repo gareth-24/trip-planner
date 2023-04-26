@@ -1,7 +1,16 @@
 export default class EventService {
-  static async getEventService(postal){
+  static async getEventService(latitude, longitude){
+    let urlString = `https://api.seatgeek.com/2/events?client_id=${process.env.API_KEY}&range=12mi&sort=score.desc`;
+    
+    if (latitude != null && longitude != null){
+      urlString = `https://api.seatgeek.com/2/events?client_id=${process.env.API_KEY}&range=12mi&sort=score.desc&lat=${latitude}&lon=${longitude}`;
+    
+    } else {
+      urlString = `https://api.seatgeek.com/2/events?geoip=true&client_id=${process.env.API_KEY}`
+    }
+    
     try{
-      const response = await fetch(`https://api.seatgeek.com/2/events?geoip=${postal}&range=12mi&sort=score.desc&client_id=${process.env.API_KEY}`)
+      const response = await fetch(urlString)
       const jsoinifiedResponse = await response.json();
       
       //https://api.seatgeek.com/2/events?geoip=94560&range=12mi&client_id=MzMyNjYyMjV8MTY4MjM1OTcyNC42MzUxOTk
