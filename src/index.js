@@ -9,14 +9,37 @@ import "leaflet/dist/images/marker-icon-2x.png";
 import EventService from './js/event-service.js';
 import buildMap from './js/map.js';
 
-// buisness for event service
-async function getEventService(lat, long) {
-  const response = await EventService.getEventService(lat,long);
+// Business LOGIC for event service
+
+function preEventService(choice){
+  let latitude = sessionStorage.getItem("latitude");
+  let longitude = sessionStorage.getItem("longitude");
+
+  if(choice === 1){
+    sessionStorage.removeItem("pageNumber");
+    sessionStorage.setItem("pageNumber", 1);
+    
+    getEventService(latitude,longitude, 1);
+  } else if (choice === 2){
+    let pageNum = parseInt(sessionStorage.getItem("pageNumber"));
+    sessionStorage.setItem("pageNumber", pageNum + 1);
+    getEventService(latitude,longitude, pageNum + 1);
+  } else if (choice === 3){
+    let pageNum = parseInt(sessionStorage.getItem("pageNumber"));
+    if(pageNum >=2){
+      pageNum -= 1;
+    }
+    sessionStorage.setItem("pageNumber", pageNum);
+    getEventService(latitude,longitude, pageNum);
+  }
+}
+
+async function getEventService(lat, long, pageNumber) {
+  console.log(lat,long,pageNumber)
+  const response = await EventService.getEventService(lat,long,pageNumber);
+  
   if (response) {
     printEventElements(response);
-    /*
-    updatesummary
-    */
   } else {
     printEventError(response);
   }
@@ -24,22 +47,20 @@ async function getEventService(lat, long) {
 
 //business for map service
 function handleMap()  {
-
-  let map = L.map("map").setView([40, -95], 5); //sets default zoom when the webpage loads
+  let map = L.map("map").setView([40, -95], 4); //sets default zoom when the webpage loads
   buildMap(map);
 
   map.addEventListener("dblclick", function(event)  {
     // Get coordinates of click
     let lat = event.latlng.lat;
     let lng = event.latlng.lng;
-    console.log(lat, lng);
     sessionStorage.setItem("latitude", lat);
     sessionStorage.setItem("longitude", lng);
 
     // Adds a pin icon to the map when double clicked
     let pinLocation = event.latlng;
     let pinMarker = L.marker(pinLocation).addTo(map);
-    pinMarker.bindPopup('You clicked the map at ' + pinLocation.toString()).openPopup();
+    pinMarker.bindPopup('Destination pinned at ' + pinLocation.toString()).openPopup();
 
     pinMarker.on('click',function(){
       map.removeLayer(pinMarker);
@@ -47,7 +68,7 @@ function handleMap()  {
   });
 }
 
-// ui 
+// UI LOGIC 
 function printEventElements(response) { 
 
   response.events.forEach(function(key){
@@ -84,32 +105,27 @@ function updateSummary(location,arrival,departure,travelMode,description)  {
 
   const newDestination = document.createElement("li");
   newDestination.append(location);
+
   const newInfo = document.createElement("ul");
+
   const newArrival = document.createElement("li");
   newArrival.append("Arrival Date: " + (arrival.toString()));
   newInfo.append(newArrival);
+
   const newDeparture = document.createElement("li");
   newDeparture.append("Departure Date: " + (departure.toString()));
   newInfo.append(newDeparture);
+
   const newTravelMode = document.createElement("li");
   newTravelMode.append("Method of travel: " + travelMode);
   newInfo.append(newTravelMode);
+
   const newDescription = document.createElement("li");
   newDescription.append(description);
   newInfo.append(newDescription);
   
   newDestination.append(newInfo);
   summaryDiv.append(newDestination);
-}
-
-function handleMapEvent(event){
-  event.preventDefault();
-  clearEvents();
-  let latitude = sessionStorage.getItem("latitude");
-  let longitude = sessionStorage.getItem("longitude");
-  getEventService(latitude,longitude);
-  sessionStorage.removeItem("latitude");
-  sessionStorage.removeItem("longitude");
 }
 
 function handleSavedInfo(event){
@@ -119,15 +135,41 @@ function handleSavedInfo(event){
   const departure = document.querySelector("#departure-date").value;
   const travelMode = document.querySelector("#travel-mode").value;
   const description = document.querySelector("#description").value;
-  console.log(location, arrival, departure, travelMode, description); //check form inputs
   updateSummary(location,arrival,departure,travelMode,description);
 }
 
+function handleResetItinerary(event){
+  event.preventDefault();
+  const summaryDiv = document.querySelector("#destination-summary");
+  const lastDestination = summaryDiv.lastChild;
+  if (lastDestination) {
+    summaryDiv.removeChild(lastDestination);
+  }
+}
+  
+function handleMapEvent(event){
+  event.preventDefault();
+  clearEvents();
+  preEventService(1);
+}
+
+function handleNextPage(event){
+  event.preventDefault();
+  clearEvents();
+  preEventService(2);
+}
+
+function handlePreviousPage(event){
+  event.preventDefault();
+  clearEvents();
+  preEventService(3);
+}
 
 window.addEventListener("load", function() {
   handleMap();
   document.querySelector("#map").addEventListener("dblclick", handleMapEvent);
   document.querySelector("#saveInputtedInfo").addEventListener("click", handleSavedInfo);
+  document.querySelector("#nextPage").addEventListener("click", handleNextPage);
+  document.querySelector("#previousPage").addEventListener("click", handlePreviousPage);
+  document.querySelector("#clearItinerary").addEventListener("click", handleResetItinerary);
 });
-
-// document.querySelector("form").addEventListener("submit", handleFormSubmission);
