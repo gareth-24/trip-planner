@@ -1,4 +1,4 @@
-# 🏖_Trip Planner_🏖
+# _🏖Trip Planner🏖_
 
 #### By _**Gareth Grindeland, Joseph Wahbeh, Marcus Kyung, and Qian Li**_
 
